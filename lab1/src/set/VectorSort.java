@@ -1,6 +1,5 @@
 package set;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
@@ -17,26 +16,18 @@ public class VectorSort{
 	
 	public static int[] uniqueElements(int[] ints){
 		MaxSet<Integer> set = new MaxSet<Integer>();
-		ArrayList<Integer> list = new ArrayList<Integer>();
 
 		for(int i : ints){
-			list.add(i);
+			set.add(i);
 		}
 		
-		Collections.sort(list);
+		int[] out = new int[set.size()];
 		
-		Iterator listItr = list.iterator();
-		while(listItr.hasNext()){			
-			set.add((Integer) listItr.next());
+		for(int i = set.size()-1; i >= 0; i--){
+			out[i] = set.getMax();
+			set.remove(out[i]);
 		}
 		
-		int[] temp = new int[set.size()];
-		int i = 0;
-		
-		Iterator setItr = set.iterator();
-		while(setItr.hasNext()){
-			temp[i++] = (Integer) setItr.next();
-		}
-		return temp;
+		return out;
 	}
 }
