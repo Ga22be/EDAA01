@@ -22,20 +22,10 @@ public class MaxSet<E extends Comparable<E>> extends ArraySet<E> {
 	 *             if this set is empty
 	 */
 	public E getMax() {
-		return maxElement;
-		// if(size() > 0){
-		// Iterator<? extends E> itr = iterator();
-		// maxElement = itr.next();
-		// while(itr.hasNext()){
-		// E tempElement = itr.next();
-		// if(tempElement.compareTo(maxElement) > 0){
-		// maxElement = tempElement;
-		// }
-		// }
-		// return maxElement;
-		// } else {
-		// throw new NoSuchElementException("The set is empty");
-		// }
+		if (size() > 0) {
+			return maxElement;
+		}
+		throw new NoSuchElementException();
 	}
 
 	/**
@@ -50,11 +40,10 @@ public class MaxSet<E extends Comparable<E>> extends ArraySet<E> {
 		if (super.add(x)) {
 			if (maxElement == null) {
 				maxElement = x;
-				return true;
 			} else if (x.compareTo(maxElement) > 0) {
 				maxElement = x;
-				return true;
 			}
+			return true;
 		}
 		return false;
 	}
@@ -69,15 +58,20 @@ public class MaxSet<E extends Comparable<E>> extends ArraySet<E> {
 	 */
 	public boolean remove(Object x) {
 		if (super.remove(x)) {
-			if (x.compareTo(maxElement) == 0) {
-				Iterator<? extends E> itr = iterator();
-				maxElement = itr.next();
-				while (itr.hasNext()) {
-					E tempElement = itr.next();
-					if (tempElement.compareTo(maxElement) > 0) {
-						maxElement = tempElement;
+			E removeElement = (E) x;
+			if (size() > 0) {
+				if (removeElement.compareTo(maxElement) == 0) {
+					Iterator<? extends E> itr = iterator();
+					maxElement = itr.next();
+					while (itr.hasNext()) {
+						E tempElement = itr.next();
+						if (tempElement.compareTo(maxElement) > 0) {
+							maxElement = tempElement;
+						}
 					}
 				}
+			} else {
+				maxElement = null;
 			}
 			return true;
 		}
@@ -92,17 +86,17 @@ public class MaxSet<E extends Comparable<E>> extends ArraySet<E> {
 	 * @return true if this set changed as a result of the call
 	 */
 	public boolean addAll(SimpleSet<? extends E> c) {
-		Iterator<? extends E> itr = s.iterator();
+		Iterator<? extends E> itr = c.iterator();
 		boolean changed = false;
-		
-		while(itr.hasNext()){
-			if(changed == false){
-				changed = add(itr.next());				
+
+		while (itr.hasNext()) {
+			if (changed == false) {
+				changed = add(itr.next());
 			} else {
 				add(itr.next());
 			}
 		}
-		
+
 		return changed;
 	}
 
