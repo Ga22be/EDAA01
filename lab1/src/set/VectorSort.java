@@ -11,7 +11,7 @@ public class VectorSort{
 		
 		for(int i : sorted){
 			System.out.print(i + ", ");
-		}
+		}		
 	}
 	
 	public static int[] uniqueElements(int[] ints){
