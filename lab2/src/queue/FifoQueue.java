@@ -6,9 +6,9 @@ public class FifoQueue<E> extends AbstractQueue<E> implements Queue<E> {
 	private int size;
 
 	public FifoQueue() {
-
+		size = 0;
 	}
-
+	
 	/**	
 	 * Returns an iterator over the elements in this queue
 	 * @return an iterator over the elements in this queue
@@ -22,7 +22,7 @@ public class FifoQueue<E> extends AbstractQueue<E> implements Queue<E> {
 	 * @return the number of elements in this queue
 	 */
 	public int size() {		
-		return 0;
+		return size;
 	}
 
 	/**	
@@ -33,6 +33,17 @@ public class FifoQueue<E> extends AbstractQueue<E> implements Queue<E> {
 	 * 			to this queue, else false
 	 */
 	public boolean offer(E x) {
+		QueueNode<E> temp;
+		if(isEmpty()){
+			temp = new QueueNode(x);
+			last = temp;
+			last.next = last;
+		} else {
+			temp = new QueueNode(x, last.next);
+			last.next = temp;
+			last = temp;
+		}
+		size++;
 		return true;
 	}
 
@@ -43,6 +54,9 @@ public class FifoQueue<E> extends AbstractQueue<E> implements Queue<E> {
 	 * @return 	the head of this queue, or null if the queue is empty 
 	 */
 	public E poll() {
+//		if(isEmpty()){
+//			
+//		}
 		return null;
 	}
 
@@ -53,7 +67,10 @@ public class FifoQueue<E> extends AbstractQueue<E> implements Queue<E> {
 	 * 			if this queue is empty
 	 */
 	public E peek() {
-		return null;
+		if(isEmpty()){
+			return null;
+		}
+		return last.element;
 	}
 
 
@@ -64,6 +81,11 @@ public class FifoQueue<E> extends AbstractQueue<E> implements Queue<E> {
 		private QueueNode(E x) {
 			element = x;
 			next = null;
+		}
+		
+		private QueueNode(E x, QueueNode lastNode){
+			element = x;
+			next = lastNode;
 		}
 
 	}
