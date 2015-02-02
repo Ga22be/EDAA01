@@ -214,6 +214,10 @@ public class TestFifoQueue {
 		}
 		assertFalse("Queue not empty", itr.hasNext());
 	}
+	
+	/**
+	 * Test appending two empty queues
+	 */
 	@Test
 	public final void testAppendEmptyQueue() {
 		FifoQueue<Integer> myIntQueue1 = new FifoQueue<Integer>();
@@ -234,6 +238,9 @@ public class TestFifoQueue {
 		}
 	}
 	
+	/**
+	 * Test appending two non-empty queues and check the order
+	 */
 	@Test
 	public final void testAppendQueue() {
 		FifoQueue<Integer> myIntQueue1 = new FifoQueue<Integer>();
@@ -244,6 +251,7 @@ public class TestFifoQueue {
 		myIntQueue1.offer(5);
 		myIntQueue.append(myIntQueue1);
 		
+		assertTrue("isEmpty should be true since we moved the elemnts to the other list", myIntQueue1.isEmpty());
 		Iterator<Integer> itr = myIntQueue.iterator();
 		int i = 1;
 		assertFalse("isEmpty() should return false", myIntQueue.isEmpty());
@@ -255,8 +263,12 @@ public class TestFifoQueue {
 		}
 		assertFalse("Queue not empty", itr.hasNext());
 	}
+	
+	/**
+	 * Test appending a non-empty queue with a empty queue
+	 */
 	@Test
-	public final void testAppendOneEmptyQueue() {
+	public final void testAppendFromEmptyQueue() {
 		FifoQueue<Integer> myIntQueue1 = new FifoQueue<Integer>();
 		myIntQueue.offer(1);
 		myIntQueue.offer(2);
@@ -275,9 +287,13 @@ public class TestFifoQueue {
 			i++;
 		}
 		assertFalse("Queue not empty", itr.hasNext());
-	}
+	}	
+	
+	/**
+	 * Test appending a empty queue with a non-empty queue
+	 */
 	@Test
-	public final void testAppendWithEmptyQueue() {
+	public final void testAppendIntoEmptyQueue() {
 		FifoQueue<Integer> myIntQueue1 = new FifoQueue<Integer>();
 		myIntQueue1.offer(1);
 		myIntQueue1.offer(2);
@@ -286,6 +302,7 @@ public class TestFifoQueue {
 		myIntQueue1.offer(5);
 		myIntQueue.append(myIntQueue1);
 		
+		assertTrue("isEmpty should be true since we moved the elemnts to the other list", myIntQueue1.isEmpty());
 		Iterator<Integer> itr = myIntQueue.iterator();
 		int i = 1;
 		assertFalse("isEmpty() should return false", myIntQueue.isEmpty());
