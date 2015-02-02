@@ -1,6 +1,7 @@
 package testqueue;
 
 import static org.junit.Assert.*;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -126,5 +127,174 @@ public class TestFifoQueue {
 		assertTrue("Wrong size after poll", myIntQueue.size() == 0);
 		assertTrue("Queue not empty after poll", myIntQueue.isEmpty());
 	}
-
+	
+	/**
+	 * Test iterator of empty queue.
+	 */
+	@Test
+	public final void testIteratorOfEmpty() {
+		Iterator<Integer> itr = myIntQueue.iterator();
+		assertFalse("hasNext of empty queue should return false", itr.hasNext());
+		try {
+			itr.next();
+			fail("next() of empty set should throw exception");
+		} catch (NoSuchElementException e) {
+			//success
+		}
+	}
+	
+	/**
+	 * Test a single offer followed by a single next().
+	 */
+	@Test
+	public final void testIteratorNext() {
+		myIntQueue.offer(7);
+		Iterator<Integer> itr = myIntQueue.iterator();
+		assertTrue("hasNext() of queue with one element should return true", itr.hasNext());
+		while(itr.hasNext()){
+			assertEquals("next() should return 7", new Integer(7), itr.next());			
+		}
+		assertFalse("hasNext() of queue with one element should return false", itr.hasNext());
+	}
+	
+	/**
+	 * Test that implementation works for a queue of strings.
+	 */
+	@Test
+	public final void testStringQueueIterator() {
+		myStringQueue.offer("First");
+		myStringQueue.offer("Second");
+		myStringQueue.offer("Third");
+		Iterator<String> itr = myStringQueue.iterator();		
+		assertTrue("Wrong size of queue", myStringQueue.size() == 3);
+		assertEquals("peek on queue of strings", "First", itr.next());
+		assertEquals("String Second expected", "Second", itr.next());
+		assertEquals("String Third expected", "Third", itr.next());
+		assertFalse("hasNext() should return false since whole list is traversed", itr.hasNext()); 
+	}
+	
+	/**
+	 * Test that traversing gives elements in right order.
+	 */
+	@Test
+	public final void testIteratorOrder() {
+		myIntQueue.offer(1);
+		myIntQueue.offer(2);
+		myIntQueue.offer(3);
+		myIntQueue.offer(4);
+		myIntQueue.offer(5);
+		Iterator<Integer> itr = myIntQueue.iterator();
+		for (int i = 1; i <= 5; i++) {
+			int k = itr.next();
+			assertEquals("next() returns incorrect element", i, k);
+//			System.out.println(k);
+		}
+		assertFalse("Queue not empty", itr.hasNext());
+	}
+	
+	/**
+	 * Test that traversing gives elements in right order.
+	 */
+	@Test
+	public final void testIteratorOrder2() {
+		myIntQueue.offer(1);
+		myIntQueue.offer(2);
+		myIntQueue.offer(3);
+		myIntQueue.offer(4);
+		myIntQueue.offer(5);
+		Iterator<Integer> itr = myIntQueue.iterator();
+		int i = 1;
+		assertFalse("isEmpty() should return false", myIntQueue.isEmpty());
+		assertTrue("hasNext() should return true", itr.hasNext());
+		while(itr.hasNext()){
+			int k = itr.next();
+			assertEquals("next() returns wrong element", i, k);
+			i++;
+//			System.out.println(k);
+		}
+		assertFalse("Queue not empty", itr.hasNext());
+	}
+	@Test
+	public final void testAppendEmptyQueue() {
+		FifoQueue<Integer> myIntQueue1 = new FifoQueue<Integer>();
+		myIntQueue.append(myIntQueue1);
+		
+		assertTrue("isEmpty() should return true", myIntQueue.isEmpty());
+		assertEquals("size() should be 0", 0, myIntQueue.size());
+		
+		Iterator<Integer> itr = myIntQueue.iterator();
+		
+		assertFalse("hasNext() should return false", itr.hasNext());
+		
+		try {
+			itr.next();
+			fail("next() of empty set should throw exception");
+		} catch (NoSuchElementException e) {
+			//success
+		}
+	}
+	
+	@Test
+	public final void testAppendQueue() {
+		FifoQueue<Integer> myIntQueue1 = new FifoQueue<Integer>();
+		myIntQueue.offer(1);
+		myIntQueue.offer(2);
+		myIntQueue1.offer(3);
+		myIntQueue1.offer(4);
+		myIntQueue1.offer(5);
+		myIntQueue.append(myIntQueue1);
+		
+		Iterator<Integer> itr = myIntQueue.iterator();
+		int i = 1;
+		assertFalse("isEmpty() should return false", myIntQueue.isEmpty());
+		assertTrue("hasNext() should return true", itr.hasNext());
+		while(itr.hasNext()){
+			int k = itr.next();
+			assertEquals("next() returns wrong element", i, k);
+			i++;
+		}
+		assertFalse("Queue not empty", itr.hasNext());
+	}
+	@Test
+	public final void testAppendOneEmptyQueue() {
+		FifoQueue<Integer> myIntQueue1 = new FifoQueue<Integer>();
+		myIntQueue.offer(1);
+		myIntQueue.offer(2);
+		myIntQueue.offer(3);
+		myIntQueue.offer(4);
+		myIntQueue.offer(5);
+		myIntQueue.append(myIntQueue1);
+		
+		Iterator<Integer> itr = myIntQueue.iterator();
+		int i = 1;
+		assertFalse("isEmpty() should return false", myIntQueue.isEmpty());
+		assertTrue("hasNext() should return true", itr.hasNext());
+		while(itr.hasNext()){
+			int k = itr.next();
+			assertEquals("next() returns wrong element", i, k);
+			i++;
+		}
+		assertFalse("Queue not empty", itr.hasNext());
+	}
+	@Test
+	public final void testAppendWithEmptyQueue() {
+		FifoQueue<Integer> myIntQueue1 = new FifoQueue<Integer>();
+		myIntQueue1.offer(1);
+		myIntQueue1.offer(2);
+		myIntQueue1.offer(3);
+		myIntQueue1.offer(4);
+		myIntQueue1.offer(5);
+		myIntQueue.append(myIntQueue1);
+		
+		Iterator<Integer> itr = myIntQueue.iterator();
+		int i = 1;
+		assertFalse("isEmpty() should return false", myIntQueue.isEmpty());
+		assertTrue("hasNext() should return true", itr.hasNext());
+		while(itr.hasNext()){
+			int k = itr.next();
+			assertEquals("next() returns wrong element", i, k);
+			i++;
+		}
+		assertFalse("Queue not empty", itr.hasNext());
+	}
 }
