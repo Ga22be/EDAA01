@@ -314,4 +314,39 @@ public class TestFifoQueue {
 		}
 		assertFalse("Queue not empty", itr.hasNext());
 	}
+	
+	/**
+	 * Test toString on an empty queue
+	 */
+	@Test
+	public final void testEmptyToString() {
+		String s = myIntQueue.toString();
+		assertEquals("toString should return empty string", "", s);
+	}
+
+	/**
+	 * Test toString on a non-empty queue
+	 */
+	@Test
+	public final void testToString() {
+		myIntQueue.offer(1);
+		myIntQueue.offer(2);
+		myIntQueue.offer(3);
+		
+		String s = myIntQueue.toString();
+		System.out.println(s);
+		assertEquals("toString should return empty string", "1, 2, 3, ", s);
+	}
+	
+	/**
+	 * Test that implementation works for a queue of strings.
+	 */
+	@Test
+	public final void testToStringOfString() {
+		myStringQueue.offer("First");
+		myStringQueue.offer("Second");
+		myStringQueue.offer("Third");
+		assertTrue("Wrong size of queue", myStringQueue.size() == 3);
+		assertEquals("peek on queue of strings", "First, Second, Third, ", myStringQueue.toString());
+	}
 }

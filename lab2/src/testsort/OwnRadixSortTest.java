@@ -1,0 +1,42 @@
+package testsort;
+
+import java.util.Random;
+
+import sort.RadixSort;
+
+public class OwnRadixSortTest {
+
+	public static void main(String[] args) {
+		int[] vector = new int[10000];
+		Random rnd = new Random();
+		
+//		for(int i = 0; i < 99; i++){
+//			vector[i] = i+1;
+//		}
+		
+		for(int i = 0; i < vector.length; i++){
+			vector[i] = rnd.nextInt(1000001);
+		}
+		
+		StringBuilder writer = new StringBuilder();
+		System.out.print("Vektorn: " );
+		for(int i: vector){
+			writer.append(i + ", ");
+		}
+		System.out.println(writer.toString());
+		
+		long startTime = System.currentTimeMillis();
+		RadixSort.radixSort(vector, 7);
+		long elapsedTime = System.currentTimeMillis() - startTime;
+		System.out.println(elapsedTime + " ms");
+		
+		writer = new StringBuilder();
+		System.out.print("   Blev: ");
+		for(int i: vector){
+			writer.append(i + ", ");
+		}
+		System.out.println(writer.toString());
+
+	}
+
+}

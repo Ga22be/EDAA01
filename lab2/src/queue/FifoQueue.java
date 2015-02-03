@@ -86,8 +86,7 @@ public class FifoQueue<E> extends AbstractQueue<E> implements Queue<E> {
 
 	/**
 	 * Appends the specified queue to this queue post: all elements from the
-	 * specified queue are appended to this queue. The specified queue (q) is
-	 * empty
+	 * specified queue are appended to this queue.
 	 * 
 	 * @param q
 	 *            the queue to append
@@ -105,6 +104,16 @@ public class FifoQueue<E> extends AbstractQueue<E> implements Queue<E> {
 		}
 		q.last = null;
 		q.size = 0; 
+	}
+	
+	public String toString(){
+		StringBuilder writer = new StringBuilder();
+		Iterator<E> itr = iterator();
+		while(itr.hasNext()){
+			E temp = itr.next();
+			writer.append(temp.toString() + ", ");
+		}
+		return writer.toString();
 	}
 
 	private static class QueueNode<E> {
