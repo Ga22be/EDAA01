@@ -9,7 +9,7 @@ public class RadixSort {
 		FifoQueue<Integer> numbers = new FifoQueue<Integer>();
 		FifoQueue<Integer>[] queues = (FifoQueue<Integer>[]) new FifoQueue[10];
 		for (int i : a) {
-			numbers.add(i);
+			numbers.offer(i);
 		}
 
 		for (int i = 0; i < 10; i++) {
@@ -20,7 +20,7 @@ public class RadixSort {
 		for (int i = 0; i < maxNbrOfDigits; i++) {
 			itr = numbers.iterator();
 			int index = (int) (Math.pow(10, i));
-//			System.out.println("Tal nr " + index + " från slutet räknat");
+//			System.out.println("Tal nr " + index + " frï¿½n slutet rï¿½knat");
 			while (itr.hasNext()) {
 				int num = itr.next();
 				queues[(num / index) % 10].offer(num);
@@ -39,11 +39,4 @@ public class RadixSort {
 			a[i] = numbers.poll();
 		}
 	}
-
-	// private int check(int num, int pos) {
-	// if (pos < 1) {
-	//
-	// }
-	// return -1;
-	// }
 }
