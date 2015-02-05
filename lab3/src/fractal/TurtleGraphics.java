@@ -103,7 +103,7 @@ public class TurtleGraphics {
 
 	/** 
 	 * Lifts the turtles pen.
-	 * /
+	 */
 	public void penUp() {
 		isPenDown = false;
 	}

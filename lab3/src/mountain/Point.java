@@ -47,4 +47,9 @@ public class Point {
 		this.x = x;
 		this.y = y;
 	}
+	
+	public String toString(){
+		String temp = "{" + x + "," + y + "}";
+		return temp;
+	}
 }

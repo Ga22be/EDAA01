@@ -3,16 +3,13 @@ package mountain;
 import fractal.Fractal;
 import fractal.TurtleGraphics;
 
-public class StraightMountain extends Fractal{
+public class StraightMountain extends Fractal {
 	private Point p1;
 	private Point p2;
 	private Point p3;
-	
-	private int length;
-	
-	public StraightMountain(int length, Point p1, Point p2, Point p3){
+
+	public StraightMountain(Point p1, Point p2, Point p3) {
 		super();
-		this.length = length;
 		this.p1 = p1;
 		this.p2 = p2;
 		this.p3 = p3;
@@ -25,21 +22,55 @@ public class StraightMountain extends Fractal{
 
 	@Override
 	public void draw(TurtleGraphics turtle) {
-		double wOffset = Math.hypot(p3.getX()-p1.getX(), p3.getY() - p1.getY());
-		double hOffset = Math.hypot(p1.getX()- p2.getX(), p1.getY() - p2.getY());
-		turtle.moveTo(turtle.getWidth() / 2.0 - wOffset / 2.0,
-				turtle.getHeight() / 2.0 + Math.sqrt(3.0) * hOffset / 4.0);
-	}
-	
-	/** 
-	 * Reursive method: Draws a recursive line of the triangle. 
-	 */
-	private void fractalLine(TurtleGraphics turtle, int order) {
-		if(order == 0){
-			
-		} else {
-			
-		}
+		turtle.moveTo(p1.getX(), p1.getY());
+		fractalTriangle(turtle, order, p1, p2, p3);
 	}
 
+	/**
+	 * Reursive method: Draws a recursive triangle.
+	 */
+	private void fractalTriangle(TurtleGraphics turtle, int order, Point p1,
+			Point p2, Point p3) {
+		if (order == 0) {
+			turtle.moveTo(p1.getX(), p1.getY());
+			turtle.penDown();
+			turtle.forwardTo(p2.getX(), p2.getY());
+			turtle.forwardTo(p3.getX(), p3.getY());
+			turtle.forwardTo(p1.getX(), p1.getY());
+			turtle.penUp();
+		} else {
+			// Top
+			fractalTriangle(
+					turtle, 
+					order-1, 
+					new Point((p1.getX() + p2.getX()) / 2.0, (p1.getY() + p2.getY()) / 2.0), 
+					p2, 
+					new Point((p2.getX() + p3.getX()) / 2.0,(p2.getY() + p3.getY()) / 2.0));
+			// Middle
+			fractalTriangle(
+					turtle, 
+					order-1, 
+					new Point((p1.getX() + p2.getX()) / 2.0, (p1.getY() + p2.getY()) / 2.0), 
+					new Point((p2.getX() + p3.getX()) / 2.0, (p2.getY() + p3.getY()) / 2.0), 
+					new Point((p1.getX() + p3.getX()) / 2.0, (p1.getY() + p3.getY()) / 2.0));
+			// Bottom left
+			fractalTriangle(
+					turtle,
+					order-1,
+					p1,
+					new Point((p1.getX() + p2.getX()) / 2.0, (p1.getY() + p2
+							.getY()) / 2.0),
+					new Point((p1.getX() + p3.getX()) / 2.0, (p1.getY() + p3
+							.getY()) / 2.0));
+			//Botom right
+			fractalTriangle(
+					turtle,
+					order-1,
+					new Point((p1.getX() + p3.getX()) / 2.0, (p1.getY() + p3
+							.getY()) / 2.0),
+					new Point((p2.getX() + p3.getX()) / 2.0, (p2.getY() + p3
+							.getY()) / 2.0),
+					p3);
+		}
+	}
 }
