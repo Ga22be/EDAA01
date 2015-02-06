@@ -29,11 +29,12 @@ public class Mountain extends Fractal {
 	@Override
 	public void draw(TurtleGraphics turtle) {
 		turtle.moveTo(p1.getX(), p1.getY());
+//		sides = new LinkedList<Side>();
 		fractalTriangle(turtle, order, dev, p1, p2, p3);
 	}
 
 	/**
-	 * Reursive method: Draws a recursive line of the triangle.
+	 * Recursive method: Draws a recursive line of the triangle.
 	 */
 	private void fractalTriangle(TurtleGraphics turtle, int order, int dev,
 			Point p1, Point p2, Point p3) {
@@ -54,36 +55,38 @@ public class Mountain extends Fractal {
 			Side test;
 
 			// Calc left middle point
-			test = new Side(p1, p2);
-			if (sides.contains(test)) {
-				mLeft = getMPoint(test);
-			} else {
-				mLeft = new Point((p1.getX() + p2.getX()) / 2.0,
-						((p1.getY() + p2.getY()) / 2.0) + offset);
-				sides.add(new Side(p1, p2, mLeft));
-			}
+			mLeft = getMPoint(p1, p2, offset);
+//			test = new Side(p1, p2);
+//			if (sides.contains(test)) {
+//				mLeft = getMPoint(test);
+//			} else {
+//				mLeft = new Point((p1.getX() + p2.getX()) / 2.0,
+//						((p1.getY() + p2.getY()) / 2.0) + offset);
+//				sides.add(new Side(p1, p2, mLeft));
+//			}
 
 			// Calc right middle point
 			// Här finns ett fel!!
-			test = new Side(p2, p3);
-			if (sides.contains(test)) {
-				mRight = getMPoint(test);
-//				System.out.println("Detta borde visas ");
-			} else {
-				mRight = new Point((p2.getX() + p3.getX()) / 2.0,
-						((p2.getY() + p3.getY()) / 2.0) + offset);
-				sides.add(new Side(p2, p3, mRight));
-			}
+			mRight = getMPoint(p2, p3, offset);
+//			test = new Side(p2, p3);
+//			if (sides.contains(test)) {
+//				mRight = getMPoint(test);
+//			} else {
+//				mRight = new Point((p2.getX() + p3.getX()) / 2.0,
+//						((p2.getY() + p3.getY()) / 2.0) + offset);
+//				sides.add(new Side(p2, p3, mRight));
+//			}
 
 			// Calc bottom middle point
-			test = new Side(p1, p3);
-			if (sides.contains(test)) {
-				mBottom = getMPoint(test);
-			} else {
-				mBottom = new Point((p1.getX() + p3.getX()) / 2.0,
-						((p1.getY() + p3.getY()) / 2.0) + offset);
-				sides.add(new Side(p1, p3, mBottom));
-			}
+			mBottom = getMPoint(p1, p3, offset);
+//			test = new Side(p1, p3);
+//			if (sides.contains(test)) {
+//				mBottom = getMPoint(test);
+//			} else {
+//				mBottom = new Point((p1.getX() + p3.getX()) / 2.0,
+//						((p1.getY() + p3.getY()) / 2.0) + offset);
+//				sides.add(new Side(p1, p3, mBottom));
+//			}
 //			System.out.println("Efter check: " + sides.toString());
 			// Top
 			fractalTriangle(turtle, order - 1, dev, mLeft, p2, mRight);
@@ -96,16 +99,29 @@ public class Mountain extends Fractal {
 		}
 	}
 
-	private Point getMPoint(Side s) {
-		Iterator<Side> itr = sides.iterator();
-		while (itr.hasNext()) {
-			Side temp = itr.next();
-			if (temp.equals(s)) {
-				//sides.remove(s);
-				// System.out.println("Efter remove: " + sides.toString());
-				return temp.getMPoint();
-			}
+//	private Point getMPoint(Side s) {
+//		Iterator<Side> itr = sides.iterator();
+//		while (itr.hasNext()) {
+//			Side temp = itr.next();
+//			if (temp.equals(s)) {
+//				//sides.remove(s);
+//				// System.out.println("Efter remove: " + sides.toString());
+//				return temp.getMPoint();
+//			}
+//		}
+//		return null;
+//	}
+	
+	private Point getMPoint(Point p1, Point p2, double offset){
+		Side test = new Side(p1, p2);
+		int index = sides.indexOf(test);
+		if (index >= 0 ) {
+			return sides.get(index).getMPoint();
+		} else {
+			Point temp = new Point((p1.getX() + p2.getX()) / 2.0,
+					((p1.getY() + p2.getY()) / 2.0) + offset);
+			sides.add(new Side(p1, p2, temp));
+			return temp;
 		}
-		return null;
 	}
 }

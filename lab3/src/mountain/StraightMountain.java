@@ -27,7 +27,7 @@ public class StraightMountain extends Fractal {
 	}
 
 	/**
-	 * Reursive method: Draws a recursive triangle.
+	 * Recursive method: Draws a recursive triangle.
 	 */
 	private void fractalTriangle(TurtleGraphics turtle, int order, Point p1,
 			Point p2, Point p3) {
