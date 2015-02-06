@@ -9,7 +9,7 @@ public class OrderDownButton extends JButton implements ActionListener {
 		super("<");
 		this.view = view;
 		addActionListener(this);
-		this.setToolTipText("�kar fraktalens ordning.");
+		this.setToolTipText("Minskar fraktalens ordning.");
 	}
 
 	public void actionPerformed(ActionEvent e) {
