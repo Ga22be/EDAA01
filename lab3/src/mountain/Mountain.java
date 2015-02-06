@@ -47,44 +47,45 @@ public class Mountain extends Fractal {
 			turtle.penUp();
 //			System.out.println("Efter check: " + sides.toString());
 		} else {
-			double offset = RandomUtilities.randFunc(dev);
+			double offset1 = RandomUtilities.randFunc(dev);
+			double offset2 = RandomUtilities.randFunc(dev);
+			double offset3 = RandomUtilities.randFunc(dev);
 			dev /= 2;
 			Point mLeft;
 			Point mRight;
 			Point mBottom;
-			Side test;
+//			Side test;
 
 			// Calc left middle point
-			mLeft = getMPoint(p1, p2, offset);
+			mLeft = getMPoint(p1, p2, offset1);
 //			test = new Side(p1, p2);
 //			if (sides.contains(test)) {
 //				mLeft = getMPoint(test);
 //			} else {
 //				mLeft = new Point((p1.getX() + p2.getX()) / 2.0,
-//						((p1.getY() + p2.getY()) / 2.0) + offset);
+//						((p1.getY() + p2.getY()) / 2.0) + offset1);
 //				sides.add(new Side(p1, p2, mLeft));
 //			}
 
 			// Calc right middle point
-			// Här finns ett fel!!
-			mRight = getMPoint(p2, p3, offset);
+			mRight = getMPoint(p2, p3, offset2);
 //			test = new Side(p2, p3);
 //			if (sides.contains(test)) {
 //				mRight = getMPoint(test);
 //			} else {
 //				mRight = new Point((p2.getX() + p3.getX()) / 2.0,
-//						((p2.getY() + p3.getY()) / 2.0) + offset);
+//						((p2.getY() + p3.getY()) / 2.0) + offset2);
 //				sides.add(new Side(p2, p3, mRight));
 //			}
 
 			// Calc bottom middle point
-			mBottom = getMPoint(p1, p3, offset);
+			mBottom = getMPoint(p1, p3, offset3);
 //			test = new Side(p1, p3);
 //			if (sides.contains(test)) {
 //				mBottom = getMPoint(test);
 //			} else {
 //				mBottom = new Point((p1.getX() + p3.getX()) / 2.0,
-//						((p1.getY() + p3.getY()) / 2.0) + offset);
+//						((p1.getY() + p3.getY()) / 2.0) + offset3);
 //				sides.add(new Side(p1, p3, mBottom));
 //			}
 //			System.out.println("Efter check: " + sides.toString());
@@ -99,24 +100,26 @@ public class Mountain extends Fractal {
 		}
 	}
 
-//	private Point getMPoint(Side s) {
-//		Iterator<Side> itr = sides.iterator();
-//		while (itr.hasNext()) {
-//			Side temp = itr.next();
-//			if (temp.equals(s)) {
-//				//sides.remove(s);
-//				// System.out.println("Efter remove: " + sides.toString());
-//				return temp.getMPoint();
-//			}
-//		}
-//		return null;
-//	}
+	private Point getMPoint(Side s) {
+		Iterator<Side> itr = sides.iterator();
+		while (itr.hasNext()) {
+			Side temp = itr.next();
+			if (temp.equals(s)) {
+				//sides.remove(s);
+				// System.out.println("Efter remove: " + sides.toString());
+				return temp.getMPoint();
+			}
+		}
+		return null;
+	}
 	
 	private Point getMPoint(Point p1, Point p2, double offset){
 		Side test = new Side(p1, p2);
 		int index = sides.indexOf(test);
 		if (index >= 0 ) {
-			return sides.get(index).getMPoint();
+			Point temp = sides.get(index).getMPoint();
+			sides.remove(index);
+			return temp;
 		} else {
 			Point temp = new Point((p1.getX() + p2.getX()) / 2.0,
 					((p1.getY() + p2.getY()) / 2.0) + offset);
