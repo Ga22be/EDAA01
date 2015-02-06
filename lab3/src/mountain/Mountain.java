@@ -44,6 +44,7 @@ public class Mountain extends Fractal {
 			turtle.forwardTo(p3.getX(), p3.getY());
 			turtle.forwardTo(p1.getX(), p1.getY());
 			turtle.penUp();
+//			System.out.println("Efter check: " + sides.toString());
 		} else {
 			double offset = RandomUtilities.randFunc(dev);
 			dev /= 2;
@@ -100,7 +101,7 @@ public class Mountain extends Fractal {
 		while (itr.hasNext()) {
 			Side temp = itr.next();
 			if (temp.equals(s)) {
-//				sides.remove(s);
+				//sides.remove(s);
 				// System.out.println("Efter remove: " + sides.toString());
 				return temp.getMPoint();
 			}

@@ -23,10 +23,11 @@ public class Side {
 	public boolean equals(Object x) {
 		if (x instanceof Side) {
 			Side s = (Side) x; 
-				return p1.equals(s.p1) && p2.equals(s.p2);
-		} else {			
-			return false;
+			if((p1.equals(s.p1) && p2.equals(s.p2)) || (p1.equals(s.p2) && p2.equals(s.p1))){
+				return true;
+			}
 		}
+		return false;
 	}
 	
 	public String toString(){
