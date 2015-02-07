@@ -4,11 +4,13 @@ public class Side {
 	private Point p1;
 	private Point p2;
 	private Point m;
+	private int level;
 
-	public Side(Point p1, Point p2, Point m) {
+	public Side(Point p1, Point p2, Point m, int level) {
 		this.p1 = p1;
 		this.p2 = p2;
 		this.m = m;
+		this.level = level;
 	}
 	
 	public Side(Point p1, Point p2){
@@ -30,6 +32,10 @@ public class Side {
 			}
 		}
 		return false;
+	}
+	
+	public int getLevel(){
+		return level;
 	}
 	
 	public String toString(){

@@ -11,6 +11,7 @@ public class Mountain extends Fractal {
 	private Point p3;
 	private int dev;
 	private List<Side> sides;
+	private int level;
 
 	public Mountain(int dev, Point p1, Point p2, Point p3) {
 		super();
@@ -19,6 +20,7 @@ public class Mountain extends Fractal {
 		this.p2 = p2;
 		this.p3 = p3;
 		sides = new LinkedList<Side>();
+		level = 0;
 	}
 
 	@Override
@@ -29,15 +31,14 @@ public class Mountain extends Fractal {
 	@Override
 	public void draw(TurtleGraphics turtle) {
 		turtle.moveTo(p1.getX(), p1.getY());
-//		sides = new LinkedList<Side>();
-		fractalTriangle(turtle, order, dev, p1, p2, p3);
+		fractalTriangle(turtle, order, dev, p1, p2, p3, level);
 	}
 
 	/**
 	 * Recursive method: Draws a recursive line of the triangle.
 	 */
 	private void fractalTriangle(TurtleGraphics turtle, int order, int dev,
-			Point p1, Point p2, Point p3) {
+			Point p1, Point p2, Point p3, int level) {
 		if (order == 0) {
 			turtle.moveTo(p1.getX(), p1.getY());
 			turtle.penDown();
@@ -45,7 +46,8 @@ public class Mountain extends Fractal {
 			turtle.forwardTo(p3.getX(), p3.getY());
 			turtle.forwardTo(p1.getX(), p1.getY());
 			turtle.penUp();
-//			System.out.println("Efter check: " + sides.toString());
+			setLevel(level);
+			System.out.println(sides.size());
 		} else {
 			double offset1 = RandomUtilities.randFunc(dev);
 			double offset2 = RandomUtilities.randFunc(dev);
@@ -54,77 +56,46 @@ public class Mountain extends Fractal {
 			Point mLeft;
 			Point mRight;
 			Point mBottom;
-//			Side test;
 
 			// Calc left middle point
-			mLeft = getMPoint(p1, p2, offset1);
-//			test = new Side(p1, p2);
-//			if (sides.contains(test)) {
-//				mLeft = getMPoint(test);
-//			} else {
-//				mLeft = new Point((p1.getX() + p2.getX()) / 2.0,
-//						((p1.getY() + p2.getY()) / 2.0) + offset1);
-//				sides.add(new Side(p1, p2, mLeft));
-//			}
-
+			mLeft = getMPoint(p1, p2, offset1, level);
 			// Calc right middle point
-			mRight = getMPoint(p2, p3, offset2);
-//			test = new Side(p2, p3);
-//			if (sides.contains(test)) {
-//				mRight = getMPoint(test);
-//			} else {
-//				mRight = new Point((p2.getX() + p3.getX()) / 2.0,
-//						((p2.getY() + p3.getY()) / 2.0) + offset2);
-//				sides.add(new Side(p2, p3, mRight));
-//			}
-
+			mRight = getMPoint(p2, p3, offset2, level);
 			// Calc bottom middle point
-			mBottom = getMPoint(p1, p3, offset3);
-//			test = new Side(p1, p3);
-//			if (sides.contains(test)) {
-//				mBottom = getMPoint(test);
-//			} else {
-//				mBottom = new Point((p1.getX() + p3.getX()) / 2.0,
-//						((p1.getY() + p3.getY()) / 2.0) + offset3);
-//				sides.add(new Side(p1, p3, mBottom));
-//			}
-//			System.out.println("Efter check: " + sides.toString());
+			mBottom = getMPoint(p1, p3, offset3, level);
+			
 			// Top
-			fractalTriangle(turtle, order - 1, dev, mLeft, p2, mRight);
+			fractalTriangle(turtle, order - 1, dev, mLeft, p2, mRight, level + 1);
 			// Middle
-			fractalTriangle(turtle, order - 1, dev, mLeft, mRight, mBottom);
+			fractalTriangle(turtle, order - 1, dev, mLeft, mRight, mBottom, level + 1);
 			// Bottom left
-			fractalTriangle(turtle, order - 1, dev, p1, mLeft, mBottom);
+			fractalTriangle(turtle, order - 1, dev, p1, mLeft, mBottom, level + 1);
 			// Bottom right
-			fractalTriangle(turtle, order - 1, dev, mBottom, mRight, p3);
+			fractalTriangle(turtle, order - 1, dev, mBottom, mRight, p3, level + 1);
 		}
-	}
-
-	private Point getMPoint(Side s) {
-		Iterator<Side> itr = sides.iterator();
-		while (itr.hasNext()) {
-			Side temp = itr.next();
-			if (temp.equals(s)) {
-				//sides.remove(s);
-				// System.out.println("Efter remove: " + sides.toString());
-				return temp.getMPoint();
-			}
-		}
-		return null;
 	}
 	
-	private Point getMPoint(Point p1, Point p2, double offset){
+	private Point getMPoint(Point p1, Point p2, double offset, int level){
 		Side test = new Side(p1, p2);
 		int index = sides.indexOf(test);
 		if (index >= 0 ) {
 			Point temp = sides.get(index).getMPoint();
-			sides.remove(index);
 			return temp;
 		} else {
 			Point temp = new Point((p1.getX() + p2.getX()) / 2.0,
 					((p1.getY() + p2.getY()) / 2.0) + offset);
-			sides.add(new Side(p1, p2, temp));
+			sides.add(new Side(p1, p2, temp, level));
 			return temp;
+		}
+	}
+	
+	private void setLevel(int level){
+		Iterator<Side> itr = sides.iterator();
+		while(itr.hasNext()){
+			Side temp = itr.next();
+			if(temp.getLevel() >= level){
+				itr.remove();
+			}
 		}
 	}
 }
