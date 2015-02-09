@@ -79,8 +79,9 @@ public class Mountain extends Fractal {
 		Side test = new Side(p1, p2);
 		int index = sides.indexOf(test);
 		if (index >= 0 ) {
-			Point temp = sides.get(index).getMPoint();
-			return temp;
+			Side temp = sides.get(index);
+//			sides.remove(temp);
+			return temp.getMPoint();
 		} else {
 			Point temp = new Point((p1.getX() + p2.getX()) / 2.0,
 					((p1.getY() + p2.getY()) / 2.0) + offset);
