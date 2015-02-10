@@ -18,37 +18,44 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
 	 * @return true if the the element was inserted
 	 */
 	public boolean add(E x) {
-		return false;
+			return add(root, x);			
+	}
+
+	private boolean add(BinaryNode<E> n, E x){
+		if(n == null){
+			n = new BinaryNode<E>(x);
+			return false;
+		} else { 
+			if(x.equals(n.element)){
+				return false;
+			} else if (x.compareTo(n.element) < 0){
+				return add(n.left, x);
+			} else {
+				return add(n.right, x);
+			}
+		}
 	}
 	
 	/**
 	 * Computes the height of tree.
 	 * @return the height of the tree
 	 */
-	public int height() {
-		BinaryNode<E> temp = root;
-		
-		return 0;
+	public int height() {		
+		return height(root);
 	}
 	
 	private int height(BinaryNode<E> n){
-		int left = 0;
-		int right = 0;
-		if(n.left == null && n.right == null){
+		if(n == null){
 			return 0;
-		} else if (n.left != null && n.right != null){
-			left = 1 + height(n.left);
-			right = 1 + height(n.right);
+		} else {
+			int left = height(n.left);
+			int right = height(n.right);
 			if(left >= right){
 				return left;
+			} else {
+				return right;				
 			}
-			return right;
-		} else if (n.left != null){
-			left = 1 + height(n.left);
-			return left;
 		}
-		right = 1 + height(n.right);
-		return right;	
 	}
 	
 	/**
@@ -56,14 +63,22 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
 	 * @return the number of elements in this tree
 	 */
 	public int size() {
-		return 0;
+		return size;
 	}
 	
 	/**
 	 * Print tree contents in inorder.
 	 */
 	public void printTree() {
-
+		printTree(root);
+	}
+	
+	private void printTree(BinaryNode<E> n){
+		if (n != null) {
+			printTree(n.left);
+			System.out.println(n.element);
+			printTree(n.right);
+			}
 	}
 
 	/** 
@@ -92,6 +107,13 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
 		return null;
 	}
 	
+//	private boolean contains(BinaryNode<E> root, E x){
+//		if(root.element.equals(x)){
+//			return true;
+//		}
+//		return false;
+//	}
+//	
 
 
 	static class BinaryNode<E> {
