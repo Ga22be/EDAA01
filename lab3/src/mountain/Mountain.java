@@ -25,12 +25,11 @@ public class Mountain extends Fractal {
 
 	@Override
 	public String getTitle() {
-		return "Fucking snett berg";
+		return "Snett berg";
 	}
 
 	@Override
 	public void draw(TurtleGraphics turtle) {
-		turtle.moveTo(p1.getX(), p1.getY());
 		fractalTriangle(turtle, order, dev, p1, p2, p3, level);
 	}
 
@@ -47,7 +46,7 @@ public class Mountain extends Fractal {
 			turtle.forwardTo(p1.getX(), p1.getY());
 			turtle.penUp();
 			setLevel(level);
-			System.out.println(sides.size());
+//			System.out.println(sides.size());
 		} else {
 			double offset1 = RandomUtilities.randFunc(dev);
 			double offset2 = RandomUtilities.randFunc(dev);
@@ -80,7 +79,7 @@ public class Mountain extends Fractal {
 		int index = sides.indexOf(test);
 		if (index >= 0 ) {
 			Side temp = sides.get(index);
-//			sides.remove(temp);
+//			sides.remove(index);
 			return temp.getMPoint();
 		} else {
 			Point temp = new Point((p1.getX() + p2.getX()) / 2.0,

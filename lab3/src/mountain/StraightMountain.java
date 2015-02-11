@@ -17,7 +17,7 @@ public class StraightMountain extends Fractal {
 
 	@Override
 	public String getTitle() {
-		return "Fucking berg";
+		return "Berg";
 	}
 
 	@Override
