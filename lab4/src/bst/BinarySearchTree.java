@@ -1,5 +1,7 @@
 package bst;
 
+import javax.swing.text.Position.Bias;
+
 public class BinarySearchTree<E extends Comparable<? super E>> {
 	BinaryNode<E> root;
     int size;
@@ -89,7 +91,11 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
 	 * Builds a complete tree from the elements in the tree.
 	 */
 	public void rebuild() {
-
+		E[] a = (E[]) new Comparable[size];
+		System.out.println(a.length);
+		toArray(root, a, 0);
+		root = buildTree(a, 0, a.length-1);
+		
 	}
 	
 	/**
@@ -113,7 +119,16 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
 	 * Returns the root of tree.
 	 */
 	private BinaryNode<E> buildTree(E[] a, int first, int last) {
-		return null;
+		if(first > last){
+			return null;
+		} else {
+			BinaryNode<E> root;
+			int middle = (first + last+1)/2;
+			root = new BinaryNode<E>(a[middle]);
+			root.left = buildTree(a, first, middle-1);
+			root.right = buildTree(a, middle+1, last);
+			return root;
+		}
 	}
 	
 	public BinaryNode<E> getRoot(){
