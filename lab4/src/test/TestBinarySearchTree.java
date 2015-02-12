@@ -1,62 +1,111 @@
 package test;
 
-import bst.BSTVisualizer;
+import static org.junit.Assert.*;
+
+import java.util.Random;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import bst.BinarySearchTree;
 
 public class TestBinarySearchTree {
+	private BinarySearchTree<Integer> myIntBST;
+	private BinarySearchTree<String> myStringBST;
 
-	public static void main(String[] args) {
-		BinarySearchTree<Integer> tree = new BinarySearchTree<Integer>();
-		BSTVisualizer visualizer = new BSTVisualizer("Tree", 600, 600);
-		
-//		tree.add(4);
-//		tree.add(2);
-//		tree.add(1);
-//		tree.add(3);
-//		tree.add(6);
-//		tree.add(5);
-//		tree.add(7);
-//		System.out.println(tree.add(4));
-//		System.out.println(tree.add(6));
-		
-		for(int i = 0; i < 63; i++){
-			tree.add(i);			
-		}
-		
-//		Integer a[] = new Integer[tree.size()];
-//		
-//		int b = tree.toArray(tree.getRoot(), a, 0);
-//
-//		for(Integer c : a){
-//			System.out.println(c);
-//		}
-		
-//		System.out.println(b);
-		
-//		System.out.println(tree.size());
-		
-		visualizer.drawTree(tree);
-		
-//		System.out.println(tree.height());
-//		long startTime = System.currentTimeMillis();
-//		tree.printTree();
-//		System.out.println();
-//		long elapsedTime = System.currentTimeMillis() - startTime;
-//		System.out.println(elapsedTime + " ms");
-		
-		tree.rebuild();
-		
-//		startTime = System.currentTimeMillis();
-//		tree.printTree();
-//		System.out.println();
-//		elapsedTime = System.currentTimeMillis() - startTime;
-//		System.out.println(elapsedTime + " ms");
-//		System.out.println(tree.height());
-		
-		
-		
-		visualizer.drawTree(tree);
+	@Before
+	public void setUp() throws Exception {
+		myIntBST = new BinarySearchTree<Integer>();
+		myStringBST = new BinarySearchTree<String>();
 	}
 
+	@After
+	public void tearDown() throws Exception {
+		myIntBST = null;
+		myStringBST = null;
+	}
+
+	/**
+	 * Test if a newly created tree is empty.
+	 */
+	@Test
+	public final void TestNewBST() {
+		assertEquals("Size should be 0", 0, myIntBST.size());
+		assertEquals("Height should be 0", 0, myIntBST.height());
+	}
+
+	/**
+	 * Test if possible to add object to empty list.
+	 */
+	@Test
+	public final void TestEmptyAdd() {
+		assertTrue("Add should be able to insert value into tree",
+				myIntBST.add(1));
+		assertTrue("Add should be able to insert value into tree",
+				myStringBST.add("a"));
+	}
+
+	/**
+	 * Test if possible to add duplicate.
+	 */
+	@Test
+	public final void TestDuplicateAdd() {
+		myIntBST.add(1);
+		myStringBST.add("a");
+		assertFalse("Add should'nt be able to insert duplicate into tree",
+				myIntBST.add(1));
+		assertFalse("Add should'nt be able to insert duplicate into tree",
+				myStringBST.add("a"));
+	}
+
+	@Test
+	public final void TestRebuild() {
+		for (int i = 0; i < 15; i++) {
+			myIntBST.add(i);
+		}
+		assertEquals("Height should be 15", 15, myIntBST.height());
+		myIntBST.rebuild();
+		assertEquals("Height should be 4", 4, myIntBST.height());
+	}
+
+	/**
+	 * Prints the created tree
+	 */
+	@Test
+	public final void TestPrintTree() {
+		for (int i = 0; i < 15; i++) {
+			myIntBST.add(i);
+		}
+
+		myIntBST.printTree();
+		System.out.println();
+		
+		myIntBST.rebuild();
+		
+		myIntBST.printTree();
+		System.out.println(); 
+	}
+	
+	/**
+	 * Prints the created tree
+	 */
+	@Test
+	public final void TestAddManyStrings() {
+		Random rand = new Random();
+		for (int i = 0; i < 26; i++) {
+			char c = 97;
+			
+			myStringBST.add(Character.toString((char) (c+rand.nextInt(26))));
+		}
+
+		myStringBST.printTree();
+		System.out.println();
+		
+		myStringBST.rebuild();
+		
+		myStringBST.printTree();
+		System.out.println(); 
+	}
 
 }
