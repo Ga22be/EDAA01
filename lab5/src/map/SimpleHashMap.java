@@ -2,29 +2,37 @@ package map;
 
 public class SimpleHashMap<K, V> implements Map<K, V> {
 	private final double loadFactor = 0.75;
-	private Entry<K,V>[] table;
+	private Entry<K, V>[] table;
 	private int capacity;
 	private int size;
-	
-	/** Constructs an empty hashmap with the default initial capacity (16)
-	and the default load factor (0.75). */
-	public SimpleHashMap(){
+
+	/**
+	 * Constructs an empty hashmap with the default initial capacity (16) and
+	 * the default load factor (0.75).
+	 */
+	public SimpleHashMap() {
 		capacity = 16;
 		table = (Entry<K, V>[]) new Entry[capacity];
 		size = 0;
 	}
-	
-	/** Constructs an empty hashmap with the specified initial capacity
-	and the default load factor (0.75). */
-	public SimpleHashMap(int capacity){
+
+	/**
+	 * Constructs an empty hashmap with the specified initial capacity and the
+	 * default load factor (0.75).
+	 */
+	public SimpleHashMap(int capacity) {
 		this.capacity = capacity;
 		table = (Entry<K, V>[]) new Entry[capacity];
 		size = 0;
 	}
-
+	
 	@Override
 	public V get(Object arg0) {
-		// TODO Auto-generated method stub
+		K key = (K) arg0;
+		int index = index(key);
+		if(index > -1){
+			return find(index, key).value;
+		}
 		return null;
 	}
 
@@ -36,28 +44,39 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 	@Override
 	public V put(K key, V value) {
 		int index = index(key);
-		if(index == -1){
-			if((((double) size)/capacity) > loadFactor){
+		if (index == -1) {
+			if ((((double) size) / capacity) > loadFactor) {
 				rehash();
 			}
-			index = key.hashCode() % table.length;
-			Entry<K, V> e = table[index];
-			while(e != null){
-				e = e.next;
+			int hashCode = key.hashCode();
+			if (hashCode < 0) {
+				hashCode *= -1;
 			}
-			
-			//TODO
-			
-		} else{
+			index = hashCode % table.length;
+			Entry<K, V> newRoot = new Entry<K, V>(key, value);
+			newRoot.next = table[index];
+			table[index] = newRoot;
+			size++;
+
+		} else {
 			return find(index, key).setValue(value);
-			
+
 		}
 		return null;
 	}
 
 	@Override
 	public V remove(Object arg0) {
-		// TODO Auto-generated method stub
+		// TODO Finnish remove method
+		//		1. Listan är null.
+		//		2. key finns i det första elementet i listan.
+		//		3. key finns senare i listan.
+		//		4. key finns inte i listan.
+		K key = (K) arg0;
+		int index = index(key);
+		if(index > -1){
+			
+		}
 		return null;
 	}
 
@@ -65,16 +84,17 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 	public int size() {
 		return size;
 	}
-	
-	public String show(){
-		table[3] = (Entry<K, V>) new Entry<Integer, String>(8, "Erik");
-		table[3].next = (Entry<K, V>) new Entry<Integer, String>(9, "Pontus");
+
+	public String show() {
+		// table[3] = (Entry<K, V>) new Entry<Integer, String>(8, "Erik");
+		// table[3].next = (Entry<K, V>) new Entry<Integer, String>(9,
+		// "Pontus");
 		StringBuilder sb = new StringBuilder();
-		for ( int i = 0; i < table.length; i++){
+		for (int i = 0; i < table.length; i++) {
 			sb.append(i + "\t");
-			if(table[i] != null){
-				Entry<K,V> e = table[i];
-				while(e != null){
+			if (table[i] != null) {
+				Entry<K, V> e = table[i];
+				while (e != null) {
 					sb.append(e.toString() + ", ");
 					e = e.next;
 				}
@@ -85,13 +105,13 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 		}
 		return sb.toString();
 	}
-	
-	public int index(K key){
-		for(int i = 0; i < table.length; i++){
-			if(table[i] != null){
+
+	private int index(K key) {
+		for (int i = 0; i < table.length; i++) {
+			if (table[i] != null) {
 				Entry<K, V> e = table[i];
-				while(e != null){
-					if(e.key == key){
+				while (e != null) {
+					if (e.key.equals(key)) {
 						return i;
 					}
 					e = e.next;
@@ -100,31 +120,31 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 		}
 		return -1;
 	}
-	
-	public Entry<K,V> find(int index, K key){
+
+	private Entry<K, V> find(int index, K key) {
 		Entry<K, V> e = table[index];
-		while(e != null){
-			if(e.key == key){
+		while (e != null) {
+			if (e.key.equals(key)) {
 				return e;
 			}
 			e = e.next;
 		}
 		return null;
 	}
-	
-	public void rehash(){
+
+	private void rehash() {
 		capacity *= 2;
 		Entry<K, V>[] newArray = (Entry<K, V>[]) new Entry[capacity];
 		System.arraycopy(table, 0, newArray, 0, table.length);
 		table = newArray;
 	}
-	
-	public static class Entry<K, V> implements Map.Entry<K, V>{
+
+	public static class Entry<K, V> implements Map.Entry<K, V> {
 		private K key;
 		private V value;
 		private Entry<K, V> next;
-		
-		public Entry(K key, V value){
+
+		public Entry(K key, V value) {
 			this.key = key;
 			this.value = value;
 		}
@@ -145,9 +165,9 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 			this.value = value;
 			return temp;
 		}
-		
+
 		@Override
-		public String toString(){
+		public String toString() {
 			return key + "=" + value;
 		}
 	}
