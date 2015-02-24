@@ -12,12 +12,12 @@ public class OwnTestSimpleHashMap {
 		System.out.println(map.size());
 		System.out.println(map.isEmpty());
 
-		for (int i = 0; i < 3000; i++) {
+		for (int i = 0; i < 10; i++) {
 			Integer temp = rnd.nextInt();
 			map.put(temp, temp);
 		}
 
-		System.out.println(map.show());
+//		System.out.println(map.show());
 		System.out.println(map.size());
 		System.out.println(map.isEmpty());
 		System.out.println();

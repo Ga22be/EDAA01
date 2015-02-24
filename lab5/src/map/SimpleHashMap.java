@@ -2,7 +2,7 @@ package map;
 
 public class SimpleHashMap<K, V> implements Map<K, V> {
 	private static final double loadFactor = 0.75;
-	private Entry<K, V>[] table;
+	private Entry<K, V>[] map;
 	private int capacity;
 	private int size;
 	private boolean rehashing;
@@ -13,7 +13,7 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 	 */
 	public SimpleHashMap() {
 		capacity = 16;
-		table = (Entry<K, V>[]) new Entry[capacity];
+		map = (Entry<K, V>[]) new Entry[capacity];
 		size = 0;
 		rehashing = false;
 	}
@@ -24,7 +24,7 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 	 */
 	public SimpleHashMap(int capacity) {
 		this.capacity = capacity;
-		table = (Entry<K, V>[]) new Entry[capacity];
+		map = (Entry<K, V>[]) new Entry[capacity];
 		size = 0;
 		rehashing = false;
 	}
@@ -54,11 +54,11 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 		} else {
 			Entry<K, V> newEntry = new Entry<K, V>(key, value);
 			// Om det finns lista i table[index]
-			if (table[index] != null) {
-				newEntry.next = table[index];
-				table[index] = newEntry;
+			if (map[index] != null) {
+				newEntry.next = map[index];
+				map[index] = newEntry;
 			} else {
-				table[index] = newEntry;
+				map[index] = newEntry;
 			}
 			if (!rehashing)
 				size++;
@@ -67,18 +67,18 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 			return null;
 		}
 	}
-	
+
 	@Override
-	public V remove(Object arg0){
+	public V remove(Object arg0) {
 		if (!isEmpty()) {
 			K key = (K) arg0;
 			int index = index(key);
 			Entry<K, V> toRemove = find(index, key);
 			if (toRemove != null) {
-				Entry<K, V> e = table[index];
+				Entry<K, V> e = map[index];
 				// Om första objektet i listan
 				if (e.key.equals(key)) {
-					table[index] = e.next;
+					map[index] = e.next;
 					size--;
 					return e.value;
 				}
@@ -103,10 +103,10 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 
 	public String show() {
 		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < table.length; i++) {
+		for (int i = 0; i < map.length; i++) {
 			sb.append(i + "\t");
-			if (table[i] != null) {
-				Entry<K, V> e = table[i];
+			if (map[i] != null) {
+				Entry<K, V> e = map[i];
 				while (e != null) {
 					sb.append(e.toString() + ", ");
 					e = e.next;
@@ -120,11 +120,14 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 	}
 
 	private int index(K key) {
-		return Math.abs(key.hashCode() % capacity);
+		int index = key.hashCode() % capacity;
+		if (index < 0)
+			index = -index;
+		return index;
 	}
 
 	private Entry<K, V> find(int index, K key) {
-		Entry<K, V> e = table[index];
+		Entry<K, V> e = map[index];
 		while (e != null) {
 			if (e.key.equals(key)) {
 				return e;
@@ -137,8 +140,8 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 	private void rehash() {
 		rehashing = true;
 		capacity *= 2;
-		Entry<K, V>[] oldArray = table;
-		table = (Entry<K, V>[]) new Entry[capacity];
+		Entry<K, V>[] oldArray = map;
+		map = (Entry<K, V>[]) new Entry[capacity];
 		for (int i = 0; i < oldArray.length; i++) {
 			Entry<K, V> head = oldArray[i];
 			while (head != null) {
@@ -147,6 +150,7 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 			}
 		}
 		rehashing = false;
+		System.out.println(map.length);
 	}
 
 	private boolean isTooBig() {
