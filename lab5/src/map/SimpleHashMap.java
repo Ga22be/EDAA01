@@ -102,9 +102,6 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 	}
 
 	public String show() {
-		// table[3] = (Entry<K, V>) new Entry<Integer, String>(8, "Erik");
-		// table[3].next = (Entry<K, V>) new Entry<Integer, String>(9,
-		// "Pontus");
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < table.length; i++) {
 			sb.append(i + "\t");
