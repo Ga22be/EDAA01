@@ -1,7 +1,7 @@
 package map;
 
 public class SimpleHashMap<K, V> implements Map<K, V> {
-	private final double loadFactor = 0.75;
+	private static final double loadFactor = 0.75;
 	private Entry<K, V>[] table;
 	private int capacity;
 	private int size;
@@ -25,12 +25,12 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 		table = (Entry<K, V>[]) new Entry[capacity];
 		size = 0;
 	}
-	
+
 	@Override
 	public V get(Object arg0) {
 		K key = (K) arg0;
 		int index = index(key);
-		if(index > -1){
+		if (index > -1) {
 			return find(index, key).value;
 		}
 		return null;
@@ -68,14 +68,31 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 	@Override
 	public V remove(Object arg0) {
 		// TODO Finnish remove method
-		//		1. Listan är null.
-		//		2. key finns i det första elementet i listan.
-		//		3. key finns senare i listan.
-		//		4. key finns inte i listan.
-		K key = (K) arg0;
-		int index = index(key);
-		if(index > -1){
-			
+		// 1. Listan är null.
+		// 2. key finns i det första elementet i listan.
+		// 3. key finns senare i listan.
+		// 4. key finns inte i listan.
+		if (!isEmpty()) {
+			K key = (K) arg0;
+			int index = index(key);
+			if (index > -1) {
+				Entry<K, V> e = table[index];
+				// Om första objektet i listan
+				if (e.key.equals(key)) {
+					table[index] = e.next;
+					size--;
+					return e.value;
+				}
+				while (e.next != null) {
+					if (e.next.key.equals(key)) {
+						Entry<K, V> temp = e.next;
+						e.next = e.next.next;
+						size--;
+						return temp.value;
+					}
+					e = e.next;
+				}
+			}
 		}
 		return null;
 	}
@@ -108,14 +125,12 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 
 	private int index(K key) {
 		for (int i = 0; i < table.length; i++) {
-			if (table[i] != null) {
-				Entry<K, V> e = table[i];
-				while (e != null) {
-					if (e.key.equals(key)) {
-						return i;
-					}
-					e = e.next;
+			Entry<K, V> e = table[i];
+			while (e != null) {
+				if (e.key.equals(key)) {
+					return i;
 				}
+				e = e.next;
 			}
 		}
 		return -1;

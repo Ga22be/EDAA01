@@ -100,19 +100,19 @@ public class TestSimpleHashMap {
 		assertEquals("key not found in map: 49", new Integer(49), m16.get(49)); // first or last
 	}
 	
-//	@Test
-//	public final void testRemoveInEmptyMap() {
-//		assertNull("wrong remove():", m.remove(1));
-//	}
+	@Test
+	public final void testRemoveInEmptyMap() {
+		assertNull("wrong remove():", m.remove(1));
+	}
 	
-//	@Test
-//	public final void testRemoveOneElement() {
-//		m.put(1, 1);
-//		assertNull("wrong remove():", m.remove(2));
-//		assertEquals("wrong result from remove: 1", new Integer(1), m.remove(1));
-//		assertNull("wrong get():", m.get(1));
-//		assertNull("wrong put():", m.put(1, 1));
-//	}
+	@Test
+	public final void testRemoveOneElement() {
+		m.put(1, 1);
+		assertNull("wrong remove():", m.remove(2));
+		assertEquals("wrong result from remove: 1", new Integer(1), m.remove(1));
+		assertNull("wrong get():", m.get(1));
+		assertNull("wrong put():", m.put(1, 1));
+	}
 	
 	public final void testRemove() {
 		m16.put(1, 1);
@@ -134,35 +134,35 @@ public class TestSimpleHashMap {
 		assertNull("wrong get():", m16.get(65));
 	}
 	
-//	@Test
-//	public final void testRemoveNonExistingElements() {
-//		m16.put(1, 1);
-//		m16.put(17, 17);
-//		m16.put(33, 33);
-//		assertEquals("wrong size():", 3, m16.size());
-//		assertNull("wrong result from remove: 49", m16.remove(49)); // non-existing element in non-empty list
-//		assertEquals("wrong size():", 3, m16.size());
-//		assertNull("wrong result from remove: 2", m16.remove(2)); // non-existing element in empty list
-//		assertEquals("wrong size():", 3, m16.size());
-//		assertEquals("key not found in map: 1", new Integer(1), m16.get(1));
-//		assertEquals("key not found in map: 17", new Integer(17), m16.get(17));
-//		assertEquals("key not found in map: 33", new Integer(33), m16.get(33));
-//	}
+	@Test
+	public final void testRemoveNonExistingElements() {
+		m16.put(1, 1);
+		m16.put(17, 17);
+		m16.put(33, 33);
+		assertEquals("wrong size():", 3, m16.size());
+		assertNull("wrong result from remove: 49", m16.remove(49)); // non-existing element in non-empty list
+		assertEquals("wrong size():", 3, m16.size());
+		assertNull("wrong result from remove: 2", m16.remove(2)); // non-existing element in empty list
+		assertEquals("wrong size():", 3, m16.size());
+		assertEquals("key not found in map: 1", new Integer(1), m16.get(1));
+		assertEquals("key not found in map: 17", new Integer(17), m16.get(17));
+		assertEquals("key not found in map: 33", new Integer(33), m16.get(33));
+	}
 	
-//	@Test
-//	public final void testManyPutAndRemove() {
-//		java.util.Random random = new java.util.Random(123456);
-//		HashSet<Integer> randNbrs = new HashSet<Integer>();
-//		for (int i = 0; i < 10000; i++) {
-//			int r = random.nextInt(10000);
-//			m16.put(r, r);
-//			randNbrs.add(r);
-//		}
-//		for (int i : randNbrs) {			
-//			assertEquals("key not found in map:" + i, new Integer(i), m16.remove(i));
-//		}
-//		assertEquals("wrong size():", 0, m16.size());
-//	}
+	@Test
+	public final void testManyPutAndRemove() {
+		java.util.Random random = new java.util.Random(123456);
+		HashSet<Integer> randNbrs = new HashSet<Integer>();
+		for (int i = 0; i < 10000; i++) {
+			int r = random.nextInt(10000);
+			m16.put(r, r);
+			randNbrs.add(r);
+		}
+		for (int i : randNbrs) {			
+			assertEquals("key not found in map:" + i, new Integer(i), m16.remove(i));
+		}
+		assertEquals("wrong size():", 0, m16.size());
+	}
 	
 	@Test
 	public final void testManyPutAndGet() {
