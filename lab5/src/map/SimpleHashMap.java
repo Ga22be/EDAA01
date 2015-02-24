@@ -5,6 +5,7 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 	private Entry<K, V>[] table;
 	private int capacity;
 	private int size;
+	private boolean rehashing;
 
 	/**
 	 * Constructs an empty hashmap with the default initial capacity (16) and
@@ -14,6 +15,7 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 		capacity = 16;
 		table = (Entry<K, V>[]) new Entry[capacity];
 		size = 0;
+		rehashing = false;
 	}
 
 	/**
@@ -24,23 +26,14 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 		this.capacity = capacity;
 		table = (Entry<K, V>[]) new Entry[capacity];
 		size = 0;
+		rehashing = false;
 	}
 
-//	@Override
-//	public V get(Object arg0) {
-//		K key = (K) arg0;
-//		int index = index(key);
-//		if (index > -1) {
-//			return find(index, key).value;
-//		}
-//		return null;
-//	}
-	
 	@Override
-	public V get(Object arg0){
+	public V get(Object arg0) {
 		K key = (K) arg0;
 		Entry<K, V> e = find(index(key), key);
-		if(e != null){
+		if (e != null) {
 			return e.value;
 		}
 		return null;
@@ -51,52 +44,37 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 		return size == 0;
 	}
 
-//	@Override
-//	public V put(K key, V value) {
-//		int index = index(key);
-//		if (index == -1) {
-//			if ((((double) size) / capacity) > loadFactor) {
-//				rehash();
-//			}
-//			int hashCode = key.hashCode();
-//			if (hashCode < 0) {
-//				hashCode *= -1;
-//			}
-//			index = hashCode % table.length;
-//			Entry<K, V> newRoot = new Entry<K, V>(key, value);
-//			newRoot.next = table[index];
-//			table[index] = newRoot;
-//			size++;
-//
-//		} else {
-//			return find(index, key).setValue(value);
-//
-//		}
-//		return null;
-//	}
-	
 	@Override
-	public V put(K key, V value){
+	public V put(K key, V value) {
 		int index = index(key);
 		Entry<K, V> e = find(index, key);
-		if(e == null){
-			Entry<K, V> head = table[index];
-			//TODO
+		// Om objekt redan finns
+		if (e != null) {
+			return e.setValue(value);
+		} else {
+			Entry<K, V> newEntry = new Entry<K, V>(key, value);
+			// Om det finns lista i table[index]
+			if (table[index] != null) {
+				newEntry.next = table[index];
+				table[index] = newEntry;
+			} else {
+				table[index] = newEntry;
+			}
+			if (!rehashing)
+				size++;
+			if (isToBig())
+				rehash();
+			return null;
 		}
-		return null;
 	}
-
+	
 	@Override
-	public V remove(Object arg0) {
-		// TODO Finnish remove method
-		// 1. Listan är null.
-		// 2. key finns i det första elementet i listan.
-		// 3. key finns senare i listan.
-		// 4. key finns inte i listan.
+	public V remove(Object arg0){
 		if (!isEmpty()) {
 			K key = (K) arg0;
 			int index = index(key);
-			if (index > -1) {
+			Entry<K, V> toRemove = find(index, key);
+			if (toRemove != null) {
 				Entry<K, V> e = table[index];
 				// Om första objektet i listan
 				if (e.key.equals(key)) {
@@ -144,20 +122,7 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 		return sb.toString();
 	}
 
-//	private int index(K key) {
-//		for (int i = 0; i < table.length; i++) {
-//			Entry<K, V> e = table[i];
-//			while (e != null) {
-//				if (e.key.equals(key)) {
-//					return i;
-//				}
-//				e = e.next;
-//			}
-//		}
-//		return -1;
-//	}
-	
-	private int index(K key){
+	private int index(K key) {
 		return Math.abs(key.hashCode() % capacity);
 	}
 
@@ -172,24 +137,23 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 		return null;
 	}
 
-//	private void rehash() {
-//		capacity *= 2;
-//		Entry<K, V>[] newArray = (Entry<K, V>[]) new Entry[capacity];
-//		System.arraycopy(table, 0, newArray, 0, table.length);
-//		table = newArray;
-//	}
-	
-	private void rehash(){
+	private void rehash() {
+		rehashing = true;
 		capacity *= 2;
 		Entry<K, V>[] oldArray = table;
 		table = (Entry<K, V>[]) new Entry[capacity];
-		for(int i = 0; i < oldArray.length; i++){
+		for (int i = 0; i < oldArray.length; i++) {
 			Entry<K, V> head = oldArray[i];
-			while(head != null){
+			while (head != null) {
 				put(head.key, head.value);
 				head = head.next;
 			}
 		}
+		rehashing = false;
+	}
+
+	private boolean isToBig() {
+		return ((double) size / capacity) > 0.75;
 	}
 
 	public static class Entry<K, V> implements Map.Entry<K, V> {
