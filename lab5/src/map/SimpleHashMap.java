@@ -62,7 +62,7 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 			}
 			if (!rehashing)
 				size++;
-			if (isToBig())
+			if (isTooBig())
 				rehash();
 			return null;
 		}
@@ -149,7 +149,7 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 		rehashing = false;
 	}
 
-	private boolean isToBig() {
+	private boolean isTooBig() {
 		return ((double) size / capacity) > 0.75;
 	}
 
