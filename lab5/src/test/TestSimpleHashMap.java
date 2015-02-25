@@ -27,6 +27,7 @@ public class TestSimpleHashMap {
 	public void tearDown() throws Exception {
 		m = null;
 		m16 = null;
+		s = null;
 	}
 	
 	@Test

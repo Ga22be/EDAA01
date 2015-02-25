@@ -121,8 +121,7 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 
 	private int index(K key) {
 		int index = key.hashCode() % capacity;
-		if (index < 0)
-			index = -index;
+		index = Math.abs(index);
 		return index;
 	}
 

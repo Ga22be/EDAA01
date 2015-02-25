@@ -10,6 +10,18 @@ public class TestEnhancedFor {
 		for(int test : i){
 			System.out.println(test);
 		}
+		
+		Integer test = Integer.MIN_VALUE;
+		
+		int hash = test.hashCode();
+		
+		boolean temp = test.equals(new Integer(hash));
+		
+		System.out.println(temp);
+		
+		System.out.println(Math.abs(test));
+		
+		System.out.println(-test);
 
 	}
 
