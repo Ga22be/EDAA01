@@ -17,7 +17,7 @@ public class OwnTestSimpleHashMap {
 			map.put(temp, temp);
 		}
 
-//		System.out.println(map.show());
+		System.out.println(map.show());
 		System.out.println(map.size());
 		System.out.println(map.isEmpty());
 		System.out.println();

@@ -12,10 +12,7 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 	 * the default load factor (0.75).
 	 */
 	public SimpleHashMap() {
-		capacity = 16;
-		map = (Entry<K, V>[]) new Entry[capacity];
-		size = 0;
-		rehashing = false;
+		this(16);
 	}
 
 	/**
@@ -76,7 +73,7 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 			Entry<K, V> toRemove = find(index, key);
 			if (toRemove != null) {
 				Entry<K, V> e = map[index];
-				// Om första objektet i listan
+				// Om fï¿½rsta objektet i listan
 				if (e.key.equals(key)) {
 					map[index] = e.next;
 					size--;
@@ -149,11 +146,11 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 			}
 		}
 		rehashing = false;
-		System.out.println(map.length);
+//		System.out.println(map.length);
 	}
 
 	private boolean isTooBig() {
-		return ((double) size / capacity) > 0.75;
+		return ((double) size / capacity) > loadFactor;
 	}
 
 	public static class Entry<K, V> implements Map.Entry<K, V> {

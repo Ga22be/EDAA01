@@ -3,12 +3,14 @@ import java.util.*;
 
 public class PhoneBook {
 	private Map<String,LinkedList<String>> phoneBook;
+	private int size;
+	
 	
 	public PhoneBook() {
-		
+		phoneBook = new HashMap<String,LinkedList<String>>();
+		size = 0;
 	}
-	
-	
+		
 	/** 
 	 * Associates the specified number with the specified 
 	 * name in this phone book. 
@@ -21,9 +23,21 @@ public class PhoneBook {
 	 * @return true if the specified name and number was inserted
 	 */
 	public boolean put(String name, String number) {
-		return false;
+		if(!phoneBook.containsKey(name)){
+			LinkedList<String> numberList = new LinkedList<String>();
+			numberList.add(number);
+			phoneBook.put(name, numberList);
+			size++;
+		} else {
+			LinkedList<String> numbers = phoneBook.get(number);
+			if(numbers.contains(number)){
+				return false;
+			} else {
+				numbers.add(number);
+			}
+		}
+		return true;
 	}
-	
 	
 	/**
 	 * Removes the the specified name from this phone book.
@@ -34,7 +48,11 @@ public class PhoneBook {
 	 * @return true if the specified name was present
 	 */
 	public boolean remove(String name) {
-		return false;
+		LinkedList<String> toRemove = phoneBook.remove(name);
+		if(toRemove == null){
+			return false;
+		}
+		return true;
 	}
 	
 	/**
@@ -45,7 +63,11 @@ public class PhoneBook {
 	 * @return The phone numbers associated with the specified name
 	 */
 	public List<String> findNumber(String name) {
-		return null;
+		LinkedList<String> numbers = phoneBook.get(name);
+		if(numbers == null){
+			return null;
+		}
+		return numbers;
 	}
 	
 	/**
@@ -57,7 +79,18 @@ public class PhoneBook {
 	 * @return The list of names associated with the specified number
 	 */
 	public List<String> findNames(String number) {
-		return null;
+		List<String> persons = new LinkedList<String>();
+		Set<String> names = names();
+		Iterator<String> itr = names.iterator();
+		while(itr.hasNext()){
+			String currentName = itr.next();
+			List<String> numbers = findNumber(currentName);
+			// Om det kan finnas personer utan nummer
+			if(numbers != null && numbers.contains(number)){
+				persons.add(currentName);
+			}
+		}
+		return persons;
 	}
 	
 	/**
@@ -66,7 +99,11 @@ public class PhoneBook {
 	 * @return The set of all names present in this phone book
 	 */
 	public Set<String> names() {
-		return null;
+		Set<String> keys = phoneBook.keySet();
+		System.out.println(keys);
+		TreeSet<String> names = new TreeSet<String>();
+		names.addAll(keys);
+		return names;
 	}
 	
 	/**
@@ -74,7 +111,7 @@ public class PhoneBook {
 	 * @return true if this phone book is empty
 	 */	
 	public boolean isEmpty() {
-		return true;
+		return size == 0;
 	}
 	
 	/**
@@ -82,7 +119,7 @@ public class PhoneBook {
 	 * @return The number of names in this phone book
 	 */
 	public int size() {
-		return 0;
+		return size;
 	}
 
 }
