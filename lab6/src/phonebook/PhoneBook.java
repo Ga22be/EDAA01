@@ -111,7 +111,7 @@ public class PhoneBook {
 	 * @return true if this phone book is empty
 	 */	
 	public boolean isEmpty() {
-		return size == 0;
+		return phoneBook.isEmpty();
 	}
 	
 	/**
@@ -119,7 +119,7 @@ public class PhoneBook {
 	 * @return The number of names in this phone book
 	 */
 	public int size() {
-		return size;
+		return phoneBook.size();
 	}
 
 }
