@@ -12,7 +12,7 @@ public class PhoneBookGUI extends JFrame {
 		super("PhoneBook");
 		phoneBook = pb;
 		
-//		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		
 		Locale.setDefault(new Locale("en"));
 		/* To avoid hardcoded Swedish text on OptionPane dialogs */
@@ -33,17 +33,24 @@ public class PhoneBookGUI extends JFrame {
 		findMenu.add(new FindNamesMenu(phoneBook,this));
 		findMenu.add(new FindNumbersMenu(phoneBook,this));
 		
-		
-			
-		
 		JPanel southPanel = new JPanel();
 		messageArea = new JTextArea(4,25);
 		messageArea.setEditable(false);
 		southPanel.add(new JScrollPane(messageArea));
 		southPanel.add(new QuitButton(phoneBook,this));
 		add(southPanel,BorderLayout.CENTER);
-		
+			
 		pack();
 		setVisible(true);
+	}
+	
+
+		
+	public void print(Collection<String> toPrint){
+		messageArea.setText("");
+		for(String s : toPrint){
+			messageArea.append(s + ", ");
+		}
+		repaint();
 	}
 }

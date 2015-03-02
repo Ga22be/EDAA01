@@ -17,6 +17,6 @@ public class ShowAllMenu extends JMenuItem implements ActionListener {
 	}
 	
 	 public void actionPerformed(ActionEvent e) {
-		
+		gui.print(phoneBook.names());
 	 }
 }
