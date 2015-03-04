@@ -14,7 +14,7 @@ public class OwnTestPhoneBook {
 		
 		System.out.println(book.names());
 		
-		new PhoneBookGUI(book);
+//		new PhoneBookGUI(book);
 		
 		
 

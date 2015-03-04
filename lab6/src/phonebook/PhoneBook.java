@@ -12,14 +12,6 @@ public class PhoneBook implements Serializable {
 
 	public PhoneBook() {
 		phoneBook = new HashMap<String, LinkedList<String>>();
-		try {
-			ObjectInputStream in = new ObjectInputStream(new FileInputStream(
-					"saveFile"));
-			phoneBook = (Map<String, LinkedList<String>>) in.readObject();
-		} catch (Exception e) {
-			// e.printStackTrace();
-			// System.exit(1);
-		}
 	}
 
 	/**
@@ -116,9 +108,7 @@ public class PhoneBook implements Serializable {
 	 * @return The set of all names present in this phone book
 	 */
 	public Set<String> names() {
-		Set<String> keys = phoneBook.keySet();
-		TreeSet<String> names = new TreeSet<String>();
-		names.addAll(keys);
+		TreeSet<String> names = new TreeSet<String>(phoneBook.keySet());
 		return names;
 	}
 
@@ -139,16 +129,4 @@ public class PhoneBook implements Serializable {
 	public int size() {
 		return phoneBook.size();
 	}
-
-	public void save(String fileName) {
-		try {
-			ObjectOutputStream out = new ObjectOutputStream(
-					new FileOutputStream(fileName));
-			out.writeObject(phoneBook);
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-	}
-
 }

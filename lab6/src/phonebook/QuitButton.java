@@ -21,7 +21,7 @@ public class QuitButton extends JButton implements ActionListener {
 			if(s == null){
 				return;
 			}
-			phoneBook.save(s);
+			gui.save(s);
 			break;
 		case 1:
 			break;
