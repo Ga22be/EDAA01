@@ -31,12 +31,9 @@ public class OneDigitField extends JTextField {
 			if ((fb.getDocument().getLength() + str.length()) > 1) {
 				return;
 			}
-			if (! str.isEmpty() && ! Character.isDigit(str.charAt(0))){
+			if (! str.isEmpty() && ! Character.isDigit(str.charAt(0)) && str.charAt(0) == '0'){
 				return;
 			}
-//			if (str.charAt(0) == '0' ){
-//				return;
-//			}
 			fb.insertString(offset, str, attr);	         
 		}
 		
@@ -44,13 +41,9 @@ public class OneDigitField extends JTextField {
 			if ((fb.getDocument().getLength() + str.length() - length) > 1) {
 				return;
 			}
-			if (! str.isEmpty() && ! Character.isDigit(str.charAt(0))) {
+			if (! str.isEmpty() && ! Character.isDigit(str.charAt(0)) && str.charAt(0) == '0') {
 				return;
 			}
-			// TODO
-//			if (str.charAt(0) == '0' ){
-//				return;
-//			}
 			System.out.println("wtf");
 			fb.replace(offset, length, str, attr);	         
 		}

@@ -90,7 +90,7 @@ public class OwnGUI {
 	
 	public void clearPuzzle(){
 		for(int i = 0; i < 81; i++){
-			box[i].setText("");
+			box[i].setText(" ");
 		}
 	}
 	
