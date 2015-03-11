@@ -1,0 +1,22 @@
+1.	a)	Genom att använda sig av en enkellänkad länkad lista. Där det översta entry-objektet i listan pekar på det underliggande osv.
+	b)	Eftersom en LinkedList inte har enkla referenser till alla objekt i listan utan behöver traversera sig genom listan 
+	 	för att veta vilket objekt som har indexet som sökes. Ska detta göras för vart objekt så kommer man få en tidskomplexitet 
+	 	i stil med n(n-1)/2 eller O(n^2).
+	c)	Eftersom man i binär sökning antingen väljer den delen av listan som är till höger eller vänster om objektet man för  stunden 
+		jämför med skulle det bli väldigt jobbigt med en enkellänkad lista. Detta då det bara finns länkar åt det ena hållet och man 
+		då saknar möjlighet att röra sig i en av riktningaran från ett objekt.
+	d)	Rehashing är när man dubblerar vektorn som objekten i en hashmap lagras i och indexerar om dessa för att överensstämma med 
+		storleken på den nya vektorn.
+	e)	100 000st => 4000ms insättningssortering.
+		Insättningssortering = O(n^2). C * n^2 = T => C = 4000/(100 000^2) => C = 0,0000004
+		500 000st => 0,0000004 * 500 000^2 = T => T = 100 000ms => 100s
+		
+		100 000st => 10ms nästan sorterad insättningssortering.
+		Insättningssortering i nästan sorterad lista = O(n). C * n = T => C = 10 / 100 000 => C = 0,0001
+		500 000st => 0,0001 * 500 000 = 50ms.
+		
+2.	--
+
+3.	a)	Om vi stryker <E extends Comparable<E>> så kommer inte det binära sökträdet fungera. Detta då jämförelsen av alla objekt i ett binärt 
+		sökträd sker med hjälp av metoden compareTo som alla objekt som extendar Comparable måste implementera.
+		
